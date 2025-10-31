@@ -55,4 +55,52 @@
 
 ### Решение 2: 
 
+План шаринга БД
+Исходные таблицы:
+- users (id, username, email, password, profile_data, created_at)
+
+- books (id, title, author, isbn, price, category, publisher_id, created_at)
+
+- shops (id, shop_name, location, owner_id, contact_info, created_at)
+
+Вертикальный шаринг
+- User DB: users таблица
+- Product DB: books таблица
+- Shop DB: shops таблица
+
+Горизонтальный шаринг
+
+Users (4 шарда):
+
+- Ключ: user_id % 4
+- Шарды: U0, U1, U2, U3
+
+Books (8 шардов):
+
+- Ключ: хэш от category
+- Шарды: B0-B7 (по категориям книг)
+
+Shops (6 шардов):
+
+- Ключ: location (регион)
+- Шарды: S0-S5 (географические)
+
+Режимы работы:
+
+- MASTER: запись + чтение
+
+- SLAVE: только чтение (репликация)
+
+- Каждый шард в Master-Slave репликации
+
+Принципы построения:
+- Горизонтально: разделение данных по ключам
+
+- Вертикально: разделение по доменам
+
+- Масштабируемость: добавление шардов
+
+- Отказоустойчивость: репликация каждого шарда
+
+Блок-схема: 
 ![Задание 2](img/1.png)
